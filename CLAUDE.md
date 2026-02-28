@@ -153,7 +153,7 @@ Claude Code memory for session-level preferences. Vault memories for knowledge t
 
 - Never modify `.obsidian/` config files unless explicitly asked.
 - Preserve existing frontmatter when editing notes.
-- Git sync is handled by `obsidian-git` plugin -- don't configure git hooks or auto-commit.
+- Don't configure git hooks or auto-commit unless the user asks. Sync is handled outside Claude.
 - When asked to "remember" something, write to `claude/Memories.md` with a link to context.
 - Prefer Obsidian CLI over filesystem when Obsidian is running.
 - Follow obsidian-skills conventions for all Obsidian file types.

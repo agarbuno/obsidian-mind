@@ -8,12 +8,11 @@ A ready-to-use vault structure that makes Claude Code productive from session on
 
 ## Quick Start
 
-1. Clone this repo (or use it as a template)
+1. Clone this repo (or use it as a GitHub template)
 2. Open the folder as an Obsidian vault
 3. Enable the Obsidian CLI in Settings > Core plugins (requires Obsidian 1.12+)
-4. Install the [obsidian-git](https://github.com/denolehov/obsidian-git) community plugin for sync
-5. Run `claude` in the vault directory
-6. Fill in `claude/North Star.md` with your goals — this grounds every session
+4. Run `claude` in the vault directory
+5. Fill in `claude/North Star.md` with your goals — this grounds every session
 
 ## Vault Structure
 
@@ -91,7 +90,7 @@ This is a starting point, not a straitjacket. Adapt it to how you work:
 
 - [Obsidian](https://obsidian.md) 1.12+ (for CLI support)
 - [Claude Code](https://claude.ai/claude-code)
-- Git (for version history and sync)
+- Git (for version history; sync via git, [Obsidian Sync](https://obsidian.md/sync), or your preferred method)
 
 ## Design Influences
 

@@ -1,7 +1,8 @@
-# Obsidian
+# Obsidian (runtime state, not vault config)
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/plugins/*/data.json
+.obsidian/graph.json
 
 # OS
 .DS_Store
