@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 cd "$CLAUDE_PROJECT_DIR"
 
 # Persist vault path for the session
@@ -10,6 +10,19 @@ fi
 # Incremental QMD re-index (fast, non-blocking if qmd not installed)
 qmd update 2>/dev/null || true
 
+# Helper: run a command with a timeout, fall back to alternative
+run_with_timeout() {
+  local timeout_sec=$1; shift
+  local fallback_cmd=$1; shift
+  if command -v gtimeout &>/dev/null; then
+    gtimeout "$timeout_sec" "$@" 2>/dev/null || eval "$fallback_cmd"
+  elif command -v timeout &>/dev/null; then
+    timeout "$timeout_sec" "$@" 2>/dev/null || eval "$fallback_cmd"
+  else
+    "$@" 2>/dev/null || eval "$fallback_cmd"
+  fi
+}
+
 # Build context summary
 echo "## Session Context"
 echo ""
@@ -19,9 +32,9 @@ echo ""
 
 echo "### North Star (current goals)"
 if command -v obsidian &>/dev/null; then
-  obsidian read file="North Star" 2>/dev/null | head -30 || cat brain/North\ Star.md 2>/dev/null | head -30
+  run_with_timeout 5 'cat brain/North\ Star.md 2>/dev/null | head -30' obsidian read file="North Star" | head -30
 else
-  cat brain/North\ Star.md 2>/dev/null | head -30
+  cat brain/North\ Star.md 2>/dev/null | head -30 || echo "(not found)"
 fi
 echo ""
 
@@ -31,7 +44,7 @@ echo ""
 
 echo "### Open Tasks"
 if command -v obsidian &>/dev/null; then
-  obsidian tasks daily todo 2>/dev/null | head -10 || echo "(none or CLI unavailable)"
+  run_with_timeout 5 'echo "(CLI timed out)"' obsidian tasks daily todo | head -10
 else
   echo "(Obsidian CLI not available)"
 fi
