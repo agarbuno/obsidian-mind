@@ -19,7 +19,7 @@ Automated — no user input needed:
 - Read any `work/1-1/*.md` notes from this week
 - Check `work/active/` for status changes
 - Check `work/incidents/` for new or updated incidents
-- Read today's and recent daily notes if they exist: `obsidian daily:read`
+- Read today's daily note if it exists: `obsidian daily:read`
 
 ### 2. North Star Alignment
 
@@ -40,7 +40,7 @@ Look across the week's notes for:
 
 ### 4. Uncaptured Win Detection
 
-Run the `brag-spotter` subagent scoped to the past 7 days.
+Run the `brag-spotter` subagent with its standard (quarterly) scope, then filter its findings down to wins that clearly occurred in the past 7 days.
 
 Additionally check:
 - Were completed items logged in `perf/Brag Doc.md` or the current quarter's brag note?
@@ -51,7 +51,7 @@ Additionally check:
 
 For each competency in `perf/competencies/`:
 - Was it exercised this week? (check work note links, incident roles, 1:1 topics)
-- If yes, is there a backlink from the evidence to the competency note?
+- If yes, is the competency explicitly linked from the evidence note?
 
 Present as a compact table: competency name, exercised (yes/no), linked (yes/no).
 
