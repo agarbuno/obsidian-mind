@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: python3 .claude/scripts/test_hooks.py
+
+      - name: Build vault zip
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          ZIP_NAME="obsidian-mind-${VERSION}.zip"
+
+          # Create clean zip excluding dev/CI files
+          zip -r "$ZIP_NAME" . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x ".claude/scripts/test_hooks.py" \
+            -x ".DS_Store" \
+            -x "thinking/session-logs/*"
+
+          echo "ZIP_NAME=$ZIP_NAME" >> "$GITHUB_ENV"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Create release
+        run: |
+          gh release create "$VERSION" "$ZIP_NAME" \
+            --title "$VERSION" \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
