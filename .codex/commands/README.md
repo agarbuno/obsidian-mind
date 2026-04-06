@@ -2,13 +2,13 @@
 
 These files are manual prompt playbooks.
 
-Codex does not auto-register repo-local slash commands, so use them explicitly:
+Codex does not auto-register repo-local workflow files, so use them explicitly:
 
 - Ask Codex to "follow `.codex/commands/standup.md`"
 - Ask Codex to "use the workflow in `.codex/commands/dump.md`"
 - Paste the relevant file into the conversation if you want to modify the workflow
 
-If a playbook still mentions a Claude slash command or a subagent, interpret it as:
+If a playbook still mentions an older command name or a delegated helper, interpret it as:
 
 - a named workflow to follow manually
 - an optional deeper analysis step, not automatic behavior

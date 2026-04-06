@@ -8,12 +8,12 @@
 > An Obsidian vault that gives Codex durable working memory.
 
 This is the Codex edition of the project stored in [`reference/`](../reference). The vault
-structure stays the same, but the orchestration model changes:
+structure stays the same, but the orchestration model is now Codex-native:
 
-- `AGENTS.md` replaces `CLAUDE.md`
-- `.codex/commands/` replaces repo-local slash commands with explicit prompt playbooks
-- `.codex/playbooks/` replaces repo-local Claude subagents with focused workflow specs
-- `.codex/scripts/` replaces hooks with manual helper scripts
+- `AGENTS.md` is the repository instruction file
+- `.codex/commands/` provides explicit prompt playbooks
+- `.codex/playbooks/` provides focused workflow specs
+- `.codex/scripts/` provides manual helper scripts
 - `.codex/skills/obsidian-mind/` packages the workflow as an optional Codex skill bundle
 
 ## Quick Start
@@ -119,7 +119,7 @@ Follow .codex/commands/wrap-up.md for this session.
 
 ## Compatibility Notes
 
-- Codex does not currently auto-register repo-local slash commands or hooks from this project.
+- Codex does not currently auto-register repo-local workflow files from this project.
 - The `.codex/` directory is intentionally explicit and transparent: you ask Codex to use a
   playbook or script when you want it.
 - If your Codex environment supports delegated or parallel work, use the files in

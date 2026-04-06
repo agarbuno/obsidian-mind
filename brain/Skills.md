@@ -65,7 +65,7 @@ This Codex edition uses:
 **Daily:**
 - `standup.md` replaces the blank-slate session start
 - `dump.md` processes freeform text and routes each piece to the correct note type and folder
-- `wrap-up.md` is a manual closeout workflow, not an automatic hook
+- `wrap-up.md` is a manual closeout workflow
 
 **Editing & Synthesis:**
 - `humanize.md` calibrates against actual writing samples, not a word blacklist

@@ -6,9 +6,9 @@ decisions, incidents, and review evidence.
 ## Codex Model
 
 - `AGENTS.md` is the authoritative Codex instruction file for this vault.
-- `.codex/commands/` contains manual prompt playbooks that replace Claude slash commands.
-- `.codex/playbooks/` contains deeper, scoped workflows adapted from the Claude subagents.
-- `.codex/scripts/` contains explicit helper scripts that replace hidden Claude hooks.
+- `.codex/commands/` contains manual prompt playbooks for common vault workflows.
+- `.codex/playbooks/` contains deeper, scoped workflows for focused tasks.
+- `.codex/scripts/` contains explicit helper scripts for classification, validation, and context loading.
 - `.codex/skills/obsidian-mind/` contains an optional installable skill bundle for Codex.
 
 Do not assume repo-local commands, playbooks, or scripts run automatically. Use them explicitly.
@@ -191,7 +191,7 @@ Use frontmatter tags, not inline tags.
 
 ## Codex Compatibility Rules
 
-- Do not assume repo-local slash commands exist.
+- Do not assume repo-local command registration exists.
 - When a user asks for a workflow such as standup, dump, weekly review, or wrap-up, open the
   matching file under `.codex/commands/` and follow it explicitly.
 - Treat `.codex/playbooks/` as scoped instructions. If your Codex environment requires explicit

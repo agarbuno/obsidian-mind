@@ -1,6 +1,6 @@
 # Codex Deep-Work Playbooks
 
-These files are scoped workflow specs adapted from the Claude subagents.
+These files are scoped workflow specs for deeper, focused tasks.
 
 They are useful in two ways:
 
