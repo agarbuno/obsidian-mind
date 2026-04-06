@@ -1,4 +1,5 @@
 ---
+date: 2026-04-05
 description: "Architectural and workflow decisions worth recalling across sessions — each links to its source work note"
 tags:
   - brain

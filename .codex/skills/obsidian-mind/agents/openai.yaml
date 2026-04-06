@@ -1,0 +1,4 @@
+interface:
+  display_name: "Obsidian Mind"
+  short_description: "Operate an Obsidian Mind vault"
+  default_prompt: "Use -mind to operate this Obsidian Mind vault: kick off a session, capture updates, or audit note hygiene."

@@ -1,4 +1,5 @@
 ---
+date: 2026-04-05
 description: "Index of quarterly brag notes — impact, competency evidence, technical growth, feedback per quarter"
 tags:
   - perf
@@ -8,6 +9,7 @@ tags:
 # Brag Doc
 
 A running log of impact, wins, and growth. Each quarter is its own note — open the one you need.
+Use [[Index|Work Notes]] and [[Skills]] to trace evidence back to project notes and workflows.
 
 ## Current Year
 

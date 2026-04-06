@@ -1,380 +1,140 @@
-🌐 **English** | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md)
+# Obsidian Mind for Codex
 
-# 🧠 Obsidian Mind
-
-[![Claude Code](https://img.shields.io/badge/claude%20code-required-D97706)](https://docs.anthropic.com/en/docs/claude-code)
+[![Codex](https://img.shields.io/badge/codex-compatible-10A37F)](https://openai.com/codex/)
 [![Obsidian](https://img.shields.io/badge/obsidian-1.12%2B-7C3AED)](https://obsidian.md)
 [![Python](https://img.shields.io/badge/python-3.8%2B-3776AB)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> **An Obsidian vault that makes Claude Code remember everything.** Start a session, talk about your day, and Claude handles the rest — notes, links, indexes, performance tracking. Every conversation builds on the last.
+> An Obsidian vault that gives Codex durable working memory.
 
----
+This is the Codex edition of the project stored in [`reference/`](../reference). The vault
+structure stays the same, but the orchestration model changes:
 
-## 🔴 The Problem
+- `AGENTS.md` replaces `CLAUDE.md`
+- `.codex/commands/` replaces repo-local slash commands with explicit prompt playbooks
+- `.codex/playbooks/` replaces repo-local Claude subagents with focused workflow specs
+- `.codex/scripts/` replaces hooks with manual helper scripts
+- `.codex/skills/obsidian-mind/` packages the workflow as an optional Codex skill bundle
 
-Claude Code is powerful, but it forgets. Every session starts from zero — no context on your goals, your team, your patterns, your wins. You re-explain the same things. You lose decisions made three conversations ago. The knowledge never compounds.
+## Quick Start
 
-## 🟢 The Solution
+1. Open the `codex/` folder as an Obsidian vault.
+2. Open the same folder in Codex.
+3. Fill in `brain/North Star.md` with your goals.
+4. Start a session with either:
+   - `bash .codex/scripts/session-context.sh`
+   - `Follow .codex/commands/standup.md for this vault.`
+5. Capture updates with:
+   - `Follow .codex/commands/dump.md and process this: ...`
+6. End a session with:
+   - `Follow .codex/commands/wrap-up.md.`
 
-Give Claude a brain.
+## Example Prompts
 
-```
-You: "start session"
-Claude: *reads North Star, checks active projects, scans recent memories*
-Claude: "You're working on Project Alpha, blocked on the BE contract.
-         Last session you decided to split the coordinator. Your 1:1
-         with your manager is tomorrow — review brief is ready."
-```
+**Morning kickoff**
 
----
-
-## ⚡ See It In Action
-
-<p align="center">
-  <img src="obsidian-mind-demo.gif" alt="Obsidian Mind demo — standup and dump commands" width="800">
-</p>
-
-**Morning kickoff:**
-
-```bash
-/standup
-# → loads North Star, active projects, open tasks, recent git changes
-# → "You have 2 active projects. The auth refactor is blocked on API contract.
-#    Your 1:1 with Sarah is at 2pm — last time she flagged observability."
+```text
+Follow .codex/commands/standup.md for this vault.
 ```
 
-**Brain dump after a meeting:**
+**Brain dump after a meeting**
 
-```bash
-/dump Just had a 1:1 with Sarah. She's happy with the auth work but wants
-us to add error monitoring before release. Also, Tom mentioned the cache
-migration is deferred to Q2 — we decided to focus on the API contract first.
-Decision: defer Redis migration. Win: Sarah praised the auth architecture.
+```text
+Follow .codex/commands/dump.md and process this:
+
+I just had a 1:1 with Sarah. She is happy with the auth work but wants
+error monitoring before release. Tom also said the cache migration is now
+deferred to Q2. Decision: defer Redis migration. Win: Sarah praised the
+auth architecture.
 ```
 
-```
-→ Updated org/people/Sarah Chen.md with meeting context
-→ Created work/1-1/Sarah 2026-03-26.md with key takeaways
-→ Created Decision Record: "Defer Redis migration to Q2"
-→ Added to perf/Brag Doc.md: "Auth architecture praised by manager"
-→ Updated work/active/Auth Refactor.md with error monitoring task
+**End of day**
+
+```text
+Follow .codex/commands/wrap-up.md for this session.
 ```
 
-**Incident response:**
-
-```bash
-/incident-capture https://slack.com/archives/C0INCIDENT/p123456
-# → slack-archaeologist reads every message, thread, and profile
-# → people-profiler creates notes for new people involved
-# → Full timeline, root cause analysis, brag doc entry
-```
-
-**End of day:**
-
-```
-You: "wrap up"
-# → verifies all notes have links
-# → updates indexes
-# → brag-spotter finds uncaptured wins
-# → suggests improvements
-```
-
----
-
-## 🚀 Quick Start
-
-1. Clone this repo (or use it as a **GitHub template**)
-2. Open the folder as an **Obsidian vault**
-3. Enable the **Obsidian CLI** in Settings → General (requires Obsidian 1.12+)
-4. Run **`claude`** in the vault directory
-5. Fill in **`brain/North Star.md`** with your goals — this grounds every session
-6. Start talking about work
-
-### Optional: QMD Semantic Search
-
-For semantic search across the vault (find "what did we decide about caching" even if the note is titled "Redis Migration ADR"):
-
-```bash
-npm install -g @tobilu/qmd
-qmd collection add . --name vault --mask "**/*.md"
-qmd context add qmd://vault "Engineer's work vault: projects, decisions, incidents, people, reviews, architecture"
-qmd update && qmd embed
-```
-
-> [!NOTE]
-> If QMD isn't installed, everything still works — Claude falls back to the Obsidian CLI and grep.
-
----
-
-## 📋 Requirements
-
-- [Obsidian](https://obsidian.md) 1.12+ (for CLI support)
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
-- Python 3 (for hook scripts)
-- Git (for version history)
-- [QMD](https://github.com/tobi/qmd) (optional, for semantic search)
-
----
-
-## ⚙️ How It Works
-
-**Folders group by purpose. Links group by meaning.** A note lives in one folder (its home) but links to many notes (its context). Claude maintains this graph — linking work notes to people, decisions, and competencies automatically. When review season arrives, the backlinks on each competency note are already the evidence trail. A note without links is a bug.
-
-**Vault-first memory** keeps context across sessions and machines. All durable knowledge lives in `brain/` topic notes (git-tracked, Obsidian-browsable, linked). Claude Code's `MEMORY.md` (`~/.claude/`) is an auto-loaded index that points to vault locations — never the storage itself. This means memories survive machine changes and are part of the graph.
-
-**Sessions have a designed lifecycle.** The `SessionStart` hook auto-injects your North Star goals, active projects, recent changes, open tasks, and the full vault file listing — Claude starts every session with context, not a blank slate. At the end, say "wrap up" and Claude runs `/wrap-up` — verifying notes, updating indexes, and spotting uncaptured wins. The 285-line `CLAUDE.md` governs everything in between: where to file things, how to link, when to split a note, what to do with decisions and incidents.
-
-### Hooks
-
-Five lifecycle hooks handle routing automatically:
-
-| Hook | When | What |
-|------|------|------|
-| 🚀 SessionStart | On startup/resume | QMD re-index, inject North Star, active work, recent changes, tasks, file listing |
-| 💬 UserPromptSubmit | Every message | Classifies content (decision, incident, win, 1:1, architecture, person) and injects routing hints |
-| ✍️ PostToolUse | After writing `.md` | Validates frontmatter, checks for wikilinks, verifies folder placement |
-| 💾 PreCompact | Before context compaction | Backs up session transcript to `thinking/session-logs/` |
-| 🏁 Stop | End of session | Checklist: archive completed projects, update indexes, check orphans |
-
-> [!TIP]
-> You just talk. The hooks handle the routing.
-
----
-
-## 📅 Daily Workflow
-
-**Morning**: Run `/standup`. Claude loads your North Star, active projects, open tasks, and recent changes. You get a structured summary and suggested priorities.
-
-**Throughout the day**: Talk naturally. Mention a decision you made, an incident that happened, a 1:1 you just had, a win you want to remember. The classification hook nudges Claude to file each piece correctly. For bigger brain dumps, use `/dump` and narrate everything at once.
-
-**End of day**: Say "wrap up" and Claude invokes `/wrap-up` — verifies notes, updates indexes, checks links, spots uncaptured wins.
-
-**Weekly**: Run `/weekly` for cross-session synthesis — North Star alignment, patterns, uncaptured wins, and next-week priorities. Run `/vault-audit` to catch orphan notes, broken links, and stale content.
-
-**Review season**: Run `/review-brief manager` and get a structured review prep document with all the evidence already linked.
-
----
-
-## 🛠️ Commands
-
-Defined in `.claude/commands/`. Run them in any Claude Code session.
-
-| Command | What It Does |
-|---------|-------------|
-| `/standup` | Morning kickoff — loads context, reviews yesterday, surfaces tasks, suggests priorities |
-| `/dump` | Freeform capture — talk naturally about anything, Claude routes it all to the right notes |
-| `/wrap-up` | Full session review — verify notes, indexes, links, suggest improvements |
-| `/humanize` | Voice-calibrated editing — makes Claude-drafted text sound like you wrote it |
-| `/weekly` | Weekly synthesis — cross-session patterns, North Star alignment, uncaptured wins |
-| `/capture-1on1` | Capture a 1:1 meeting transcript into a structured vault note |
-| `/incident-capture` | Capture an incident from Slack/channels into structured notes |
-| `/slack-scan` | Deep scan Slack channels/DMs for evidence |
-| `/peer-scan` | Deep scan a peer's GitHub PRs for review prep |
-| `/review-brief` | Generate a review brief (manager or peer version) |
-| `/self-review` | Write your self-assessment for review season — projects, competencies, principles |
-| `/review-peer` | Write a peer review — projects, principles, performance summary |
-| `/vault-audit` | Audit indexes, links, orphans, stale context |
-| `/vault-upgrade` | Import content from an existing vault — version detection, classification, migration |
-| `/project-archive` | Move a completed project from active/ to archive/, update indexes |
-
----
-
-## 🤖 Subagents
-
-Specialized agents that run in isolated context windows. They handle heavy operations without polluting your main conversation.
-
-| Agent | Purpose | Invoked by |
-|-------|---------|------------|
-| `brag-spotter` | Finds uncaptured wins and competency gaps | `/wrap-up`, `/weekly` |
-| `context-loader` | Loads all vault context about a person, project, or concept | Direct |
-| `cross-linker` | Finds missing wikilinks, orphans, broken backlinks | `/vault-audit` |
-| `people-profiler` | Bulk creates/updates person notes from Slack profiles | `/incident-capture` |
-| `review-prep` | Aggregates all performance evidence for a review period | `/review-brief` |
-| `slack-archaeologist` | Full Slack reconstruction — every message, thread, profile | `/incident-capture` |
-| `vault-librarian` | Deep vault maintenance — orphans, broken links, stale notes | `/vault-audit` |
-| `review-fact-checker` | Verify every claim in a review draft against vault sources | `/self-review`, `/review-peer` |
-| `vault-migrator` | Classify, transform, and migrate content from a source vault | `/vault-upgrade` |
-
-> [!NOTE]
-> Subagents are defined in `.claude/agents/`. You can add your own for domain-specific workflows.
-
----
-
-## 📊 Performance Graph
-
-The vault doubles as a performance tracking system:
-
-1. **Competency notes** in `perf/competencies/` define your org's competency framework — one note per competency
-2. **Work notes** link to competencies in their `## Related` section, annotated with what was demonstrated
-3. **Backlinks accumulate automatically** — review prep becomes reading the backlinks panel on each competency note
-4. **Brag Doc** aggregates wins per quarter with links to evidence notes
-5. **`/peer-scan`** deep-scans a colleague's GitHub PRs and writes structured evidence to `perf/evidence/`
-6. **`/review-brief`** generates a full review brief by aggregating everything: brag entries, decisions, incidents, competency evidence, and 1:1 feedback
-
-> [!TIP]
-> To get started: create competency notes from the template, then link your work notes to them as you go. The graph does the rest.
-
----
-
-## 📋 Bases
-
-The `bases/` folder contains database views that query your notes' frontmatter properties. They update automatically as notes change.
-
-| Base | Shows |
-|------|-------|
-| Work Dashboard | Active projects filtered by quarter, grouped by status |
-| Incidents | All incidents sorted by severity and date |
-| People Directory | Everyone in `org/people/` with role, team |
-| 1:1 History | All 1:1 notes sortable by person and date |
-| Review Evidence | PR scans and evidence grouped by person and cycle |
-| Competency Map | Competencies with evidence counts from backlinks |
-| Templates | Quick access to all templates |
-
-`Home.md` embeds these views, making it the vault's dashboard.
-
----
-
-## 📁 Vault Structure
-
-```
-Home.md                 Vault entry point — embedded Base views, quick links
-CLAUDE.md               Operating manual — Claude reads this every session
-vault-manifest.json     Template metadata — version, structure, schemas
-CHANGELOG.md            Version history
-CONTRIBUTING.md         Template development checklist
-README.md               Product documentation
-LICENSE                 MIT license
-
-bases/                  Dynamic database views (Work Dashboard, Incidents, People, etc.)
-
-work/
-  active/               Current projects (1–3 files at a time)
-  archive/YYYY/         Completed work, organized by year
-  incidents/            Incident docs (main note + RCA + deep dive)
-  1-1/                  1:1 meeting notes — named <Person> YYYY-MM-DD.md
-  Index.md              Map of Content for all work
-
-org/
-  people/               One note per person — role, team, relationship, key moments
-  teams/                One note per team — members, scope, interactions
-  People & Context.md   MOC for organizational knowledge
-
-perf/
-  Brag Doc.md           Running log of wins, linked to evidence
-  brag/                 Quarterly brag notes (one per quarter)
-  competencies/         One note per competency (link targets)
-  evidence/             PR deep scans, data extracts for reviews
-  <cycle>/              Review cycle briefs and artifacts
-
-brain/
-  North Star.md         Goals and focus areas — read every session
-  Memories.md           Index of memory topics
-  Key Decisions.md      Significant decisions and their reasoning
-  Patterns.md           Recurring patterns observed across work
-  Gotchas.md            Things that have gone wrong and why
-  Skills.md             Custom workflows and slash commands
-
-reference/              Codebase knowledge, architecture maps, flow docs
-thinking/               Scratchpad for drafts — promote findings, then delete
-templates/              Obsidian templates with YAML frontmatter
-
-.claude/
-  commands/             15 slash commands
-  agents/               9 subagents
-  scripts/              Hook scripts + charcount.sh utility
-  skills/               Obsidian + QMD skills
-  settings.json         5 hooks configuration
-```
-
----
-
-## 📝 Templates
-
-Templates with YAML frontmatter, each including a `description` field for progressive disclosure:
-
-- **Work Note** — date, description, project, status, quarter, tags
-- **Decision Record** — date, description, status (proposed/accepted/deprecated), owner, context
-- **Thinking Note** — date, description, context, tags (scratchpad — delete after promoting)
-- **Competency Note** — date, description, current-level, target-level, proficiency table
-- **1:1 Note** — date, person, key takeaways, action items, quotes
-- **Incident Note** — date, ticket, severity, role, timeline, root cause, impact
-
----
-
-## 🔧 What's Included
-
-### Obsidian Skills
-
-[kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) pre-installed in `.claude/skills/`:
-
-- **obsidian-markdown** — Obsidian-flavored markdown (wikilinks, embeds, callouts, properties)
-- **obsidian-cli** — CLI commands for vault operations
-- **obsidian-bases** — Database-style `.base` files
-- **json-canvas** — Visual `.canvas` file creation
-- **defuddle** — Web page to markdown extraction
-
-### QMD Skill
-
-A custom skill in `.claude/skills/qmd/` that teaches Claude to use [QMD](https://github.com/tobi/qmd) semantic search proactively — before reading files, before creating notes (to check for duplicates), and after creating notes (to find related content that should link to it).
-
----
-
-## 🎨 Customize It
-
-This is a starting point. Adapt it to how you work:
-
-| What | Where |
-|------|-------|
-| Your goals | `brain/North Star.md` — grounds every session |
-| Your org | `org/` — add your manager, team, key collaborators |
-| Your competencies | `perf/competencies/` — match your org's framework |
-| Your tools | `.claude/commands/` — edit for your GitHub org, Slack workspace |
-| Your conventions | `CLAUDE.md` — the operating manual, evolve it as you go |
-| Your domain | Add folders, subagents in `.claude/agents/`, or classification rules in `.claude/scripts/` |
-
-> [!IMPORTANT]
-> `CLAUDE.md` is the operating manual. When you change conventions, update it — Claude reads it every session.
-
----
-
-## 🔄 Upgrading
-
-Already using an older version of obsidian-mind (or any Obsidian vault)? The `/vault-upgrade` command migrates your content into the latest template:
-
-```bash
-# 1. Clone the latest obsidian-mind
-git clone https://github.com/breferrari/obsidian-mind.git ~/new-vault
-
-# 2. Open it in Claude Code
-cd ~/new-vault && claude
-
-# 3. Run the upgrade pointing to your old vault
-/vault-upgrade ~/my-old-vault
-```
-
-Claude will:
-1. **Detect** your vault version (v1–v3.2, or identify it as a non-obsidian-mind vault)
-2. **Inventory** every file — classify as user content, scaffold, infrastructure, or uncategorized
-3. **Present a migration plan** — you see exactly what will be copied, transformed, and skipped
-4. **Execute** after your approval — transforms frontmatter, fixes wikilinks, rebuilds indexes
-5. **Validate** — checks for orphans, broken links, missing frontmatter
-
-Your old vault is **never modified**. Use `--dry-run` to preview the plan without executing.
-
-> [!NOTE]
-> Works with any Obsidian vault, not just obsidian-mind. For non-obsidian-mind vaults, Claude reads each note and classifies it semantically — routing work notes, people, incidents, 1:1s, and decisions to the right folders.
-
----
-
-## 🙏 Design Influences
-
-- [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) — Official Obsidian agent skills
-- [James Bedford](https://x.com/jameesy) — Vault structure philosophy, separation of AI-generated content
-- [arscontexta](https://github.com/agenticnotetaking/arscontexta) — Progressive disclosure via description fields, session hooks
-
----
-
-## 📄 License
-
-MIT
+## Codex-Native Structure
+
+| Path | Role in Codex |
+|------|---------------|
+| `AGENTS.md` | Repo instructions auto-read by Codex |
+| `.codex/commands/` | Manual workflow playbooks for common vault tasks |
+| `.codex/playbooks/` | Focused specs for deeper context loading, audits, and review prep |
+| `.codex/scripts/` | Explicit utilities for context summaries, classification, note validation, and character limits |
+| `.codex/skills/obsidian-mind/` | Optional installable skill bundle for Codex |
+
+## Commands and Playbooks
+
+### Command Playbooks
+
+| File | Purpose |
+|------|---------|
+| `standup.md` | Morning kickoff and prioritization |
+| `dump.md` | Freeform capture and routing |
+| `wrap-up.md` | End-of-session review |
+| `weekly.md` | Weekly synthesis |
+| `humanize.md` | Voice-calibrated editing |
+| `capture-1on1.md` | 1:1 note capture |
+| `incident-capture.md` | Incident capture |
+| `slack-scan.md` | Slack transcript or export scan |
+| `peer-scan.md` | Peer PR scan |
+| `review-brief.md` | Manager or peer review brief |
+| `self-review.md` | Self-assessment drafting |
+| `review-peer.md` | Peer review drafting |
+| `vault-audit.md` | Vault hygiene audit |
+| `vault-upgrade.md` | Vault migration and upgrade |
+| `project-archive.md` | Archive completed work |
+
+### Deep-Work Playbooks
+
+| File | Purpose |
+|------|---------|
+| `context-loader.md` | Build a focused briefing on a person, project, incident, or concept |
+| `cross-linker.md` | Find missing links and backlink gaps |
+| `vault-librarian.md` | Audit note hygiene and stale notes |
+| `brag-spotter.md` | Find uncaptured wins and competency evidence |
+| `review-prep.md` | Aggregate evidence for a review period |
+| `review-fact-checker.md` | Verify review claims against sources |
+| `people-profiler.md` | Create or update person notes |
+| `slack-archaeologist.md` | Reconstruct history from Slack material |
+| `vault-migrator.md` | Classify and migrate notes from another vault |
+
+## Helper Scripts
+
+| Script | What it does |
+|--------|---------------|
+| `.codex/scripts/session-context.sh` | Prints North Star, recent changes, tasks, active work, and a vault file listing |
+| `.codex/scripts/classify-message.py` | Detects routing hints in freeform text |
+| `.codex/scripts/validate-note.py` | Checks frontmatter and wikilink hygiene |
+| `.codex/scripts/charcount.sh` | Counts review section characters and enforces limits |
+
+## Requirements
+
+- [Obsidian](https://obsidian.md) 1.12+ for CLI support
+- Codex
+- Python 3
+- Git
+- [QMD](https://github.com/tobi/qmd) optional, for semantic search
+
+## Compatibility Notes
+
+- Codex does not currently auto-register repo-local slash commands or hooks from this project.
+- The `.codex/` directory is intentionally explicit and transparent: you ask Codex to use a
+  playbook or script when you want it.
+- If your Codex environment supports delegated or parallel work, use the files in
+  `.codex/playbooks/` as the specs for that work. Otherwise, Codex can still follow them directly
+  in the main thread.
+
+## Optional Skill Bundle
+
+An installable skill bundle lives at `.codex/skills/obsidian-mind/`. It is useful if you want to
+reuse these workflows across Codex sessions or copy the skill into `~/.codex/skills/`.
+
+## Vault Principles
+
+- Folders group by purpose; links group by meaning.
+- A note without links is a bug.
+- Durable knowledge belongs in the vault, not in chat memory.
+- `thinking/` is a scratchpad, not long-term storage.
+- Review prep should emerge from accumulated evidence, not last-minute reconstruction.

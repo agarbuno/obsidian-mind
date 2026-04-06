@@ -1,12 +1,13 @@
 ---
 tags:
-  - claude
+  - thinking
   - index
 ---
 
 # Thinking Space
 
-Claude's scratchpad for reasoning, drafts, and working through problems before committing conclusions to work notes.
+Codex's scratchpad for reasoning, drafts, and working through problems before committing
+conclusions to work notes.
 
 ## How This Works
 

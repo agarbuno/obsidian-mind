@@ -1,4 +1,5 @@
 ---
+date: 2026-04-05
 description: "Central map of all work notes — active projects, completed work by quarter, decisions log"
 tags:
   - index

@@ -1,17 +1,21 @@
 {
-  "template": "obsidian-mind",
-  "version": "3.3.0",
-  "released": "2026-03-29",
+  "template": "obsidian-mind-codex",
+  "version": "1.0.0",
+  "released": "2026-04-05",
+  "based_on": {
+    "template": "obsidian-mind",
+    "variant": "claude-reference"
+  },
   "infrastructure": [
-    "CLAUDE.md",
+    "AGENTS.md",
     "Home.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "LICENSE",
     ".gitignore",
-    ".claude/**",
-    ".claude-plugin/**",
+    ".codex/**",
+    ".github/**",
     "templates/**",
     "bases/**",
     "vault-manifest.json",
@@ -44,28 +48,14 @@
     "reference/"
   ],
   "version_fingerprints": {
-    "v1": {
-      "exists": ["claude/Memories.md"],
-      "missing": ["brain/", "bases/"]
-    },
-    "v2": {
-      "exists": ["brain/", "bases/", "Home.md"],
-      "missing": [".claude/agents/"]
-    },
-    "v3.0": {
-      "exists": [".claude/agents/", ".claude/scripts/"],
-      "missing": [".claude/agents/review-fact-checker.md"]
-    },
-    "v3.1": {
-      "exists": [".claude/agents/review-fact-checker.md"],
-      "missing": [".claude/commands/humanize.md"]
-    },
-    "v3.2": {
-      "exists": [".claude/commands/humanize.md", ".claude/commands/weekly.md"],
-      "missing": ["vault-manifest.json"]
-    },
-    "v3.3": {
-      "exists": ["vault-manifest.json"]
+    "codex-v1": {
+      "exists": [
+        "AGENTS.md",
+        ".codex/commands/",
+        ".codex/playbooks/",
+        ".codex/scripts/",
+        "vault-manifest.json"
+      ]
     }
   },
   "frontmatter_required": {

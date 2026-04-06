@@ -1,4 +1,5 @@
 ---
+date: 2026-04-05
 description: "Index of memory topics — key decisions, patterns, gotchas, people context"
 tags:
   - brain
@@ -14,7 +15,7 @@ Persistent context and knowledge retained across sessions. Each topic lives in i
 - [[Gotchas]] — things that have bitten before and will bite again
 - [[People & Context]] — org structure, teams, review history, dynamics
 - [[North Star]] — living goals document, read at session start
-- [[Skills]] — custom slash commands and workflows
+- [[Skills]] — Codex playbooks, helper scripts, and workflows
 
 ## Recent Context
 

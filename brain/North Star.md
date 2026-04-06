@@ -1,5 +1,5 @@
 ---
-date:
+date: 2026-04-05
 description: "Living document of goals, focus areas, and aspirations — read at session start, updated when direction shifts"
 tags:
   - brain
@@ -11,7 +11,9 @@ aliases:
 
 # North Star
 
-A living document of goals, aspirations, and current focus areas. Both you and Claude write to this. Claude reads it at the start of meaningful work sessions and references it when making suggestions.
+A living document of goals, aspirations, and current focus areas. Both you and Codex write to this.
+Codex reads it at the start of meaningful work sessions, links it to [[Home]], and references it
+when making suggestions. See [[Skills]] for the main workflows that use it.
 
 ## Current Focus
 

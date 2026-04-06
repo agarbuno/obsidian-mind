@@ -1,4 +1,5 @@
 ---
+date: 2026-04-05
 description: "Vault entry point — embedded dashboards, quick links, current focus"
 tags:
   - index

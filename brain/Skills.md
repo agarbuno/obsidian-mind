@@ -1,5 +1,6 @@
 ---
-description: "Vault-specific workflows and slash commands — reusable patterns for review prep, project tracking, and vault maintenance"
+date: 2026-04-05
+description: "Vault-specific Codex workflows, prompt playbooks, and helper scripts for review prep, project tracking, and vault maintenance"
 tags:
   - brain
   - index
@@ -7,131 +8,138 @@ tags:
 
 # Skills
 
-Custom slash commands, subagents, and reusable workflows. Defined in `.claude/commands/` and `.claude/agents/`.
+Codex-facing workflows for this vault. The authoritative repo instructions live in `AGENTS.md`.
+Use [[Home]] as the entry point and [[North Star]] to ground priorities before picking a workflow.
 
-## Slash Commands
+This Codex edition uses:
+
+- `.codex/commands/` for manual prompt playbooks
+- `.codex/playbooks/` for deeper focused workflows
+- `.codex/scripts/` for explicit helper scripts
+- `.codex/skills/obsidian-mind/` for an optional installable skill bundle
+
+## Prompt Playbooks
 
 ### Daily Workflow
 
-| Command | Purpose |
+| Playbook | Purpose |
 |---------|---------|
-| `/standup` | Morning kickoff — load context, review yesterday, surface tasks, identify priorities |
-| `/dump` | Freeform capture — dump anything, gets routed to the right notes automatically |
-| `/wrap-up` | Full session review — verify notes, indexes, links, suggest improvements. Auto-triggered on "wrap up". |
+| `standup.md` | Morning kickoff — load context, review yesterday, surface tasks, identify priorities |
+| `dump.md` | Freeform capture — route raw updates into the right notes |
+| `wrap-up.md` | Full session review — verify notes, indexes, links, and suggest improvements |
 
 ### Editing & Synthesis
 
-| Command | Purpose |
+| Playbook | Purpose |
 |---------|---------|
-| `/humanize` | Voice-calibrated editing — makes Claude-drafted text sound like you wrote it |
-| `/weekly` | Weekly synthesis — cross-session patterns, North Star alignment, uncaptured wins |
+| `humanize.md` | Voice-calibrated editing — makes Codex-drafted text sound like you wrote it |
+| `weekly.md` | Weekly synthesis — cross-session patterns, North Star alignment, uncaptured wins |
 
 ### Capture & Documentation
 
-| Command | Purpose |
+| Playbook | Purpose |
 |---------|---------|
-| `/capture-1on1` | Capture 1:1 meeting transcript into structured vault note with quotes, action items, DM context |
-| `/incident-capture` | Capture incident from Slack channels/DMs into structured vault notes — timeline, people, analysis, brag entry |
-| `/slack-scan` | Deep scan Slack channels/DMs for evidence — extracts timestamped touchpoints, organizes by context |
+| `capture-1on1.md` | Capture a 1:1 transcript into a structured vault note |
+| `incident-capture.md` | Capture incident context into structured notes |
+| `slack-scan.md` | Deep scan Slack transcripts or exports for evidence |
 
 ### Performance & Review
 
-| Command | Purpose |
+| Playbook | Purpose |
 |---------|---------|
-| `/peer-scan` | Deep scan a peer's GitHub PRs for review prep — produces structured analysis saved to `perf/evidence/` |
-| `/review-brief` | Generate review brief (manager or peer version) from vault data |
-| `/self-review` | Write self-assessment for review tool — projects, competencies, principles |
-| `/review-peer` | Write peer review — projects, principles, performance summary |
+| `peer-scan.md` | Deep scan a peer's GitHub PRs for review prep |
+| `review-brief.md` | Generate review brief (manager or peer version) from vault data |
+| `self-review.md` | Write a self-assessment from vault evidence |
+| `review-peer.md` | Write a peer review from vault evidence |
 
 ### Vault Maintenance
 
-| Command | Purpose |
+| Playbook | Purpose |
 |---------|---------|
-| `/vault-audit` | Deep structural audit — indexes, frontmatter, links, Bases, folder placement, stale context |
-| `/vault-upgrade` | Import content from an existing vault — detects version, classifies notes, transforms frontmatter, rebuilds indexes |
-| `/project-archive` | Move completed project from `work/active/` to `work/archive/YYYY/`, update all indexes |
+| `vault-audit.md` | Deep structural audit — indexes, frontmatter, links, Bases, folder placement, stale context |
+| `vault-upgrade.md` | Import content from an existing vault — detect version, classify notes, transform frontmatter, rebuild indexes |
+| `project-archive.md` | Move completed project from `work/active/` to `work/archive/YYYY/`, update indexes |
 
 ## Usage Notes
 
 **Daily:**
-- `/standup` replaces the manual session start — reads North Star, active work, tasks, git log
-- `/dump` processes freeform text and routes each piece to the correct note type and folder
-- `/wrap-up` is auto-triggered when you say "wrap up" — runs full session review
+- `standup.md` replaces the blank-slate session start
+- `dump.md` processes freeform text and routes each piece to the correct note type and folder
+- `wrap-up.md` is a manual closeout workflow, not an automatic hook
 
 **Editing & Synthesis:**
-- `/humanize` calibrates against your actual writing samples, not a word blacklist. Detects context from frontmatter (review → corporate-confident, incident → precise, 1:1 → conversational). Run after drafting any note to make it sound human.
-- `/weekly` bridges standup and review brief — run at end of week for cross-session patterns, North Star drift, and uncaptured wins. Output is transient by default; offer to promote findings to brag doc or North Star.
+- `humanize.md` calibrates against actual writing samples, not a word blacklist
+- `weekly.md` bridges standup and review prep with a cross-session synthesis
 
 **Capture:**
-- `/capture-1on1` handles transcripts, raw notes, or summaries
-- `/incident-capture` takes Slack URLs and produces structured incident documentation
-- `/slack-scan` should be run AFTER `/peer-scan` to add context beyond code (leadership, communication, collaboration evidence)
+- `capture-1on1.md` handles transcripts, raw notes, or summaries
+- `incident-capture.md` handles Slack transcripts, exports, or manual notes
+- `slack-scan.md` is most useful after `peer-scan.md` or before review prep
 
 **Performance:**
-- `/peer-scan` works best when launched as parallel agents (one per person)
-- `/review-brief` needs the private brief to exist first — it generates filtered versions from it
+- `peer-scan.md` works best when the user explicitly asks for deeper or parallel review prep
+- `review-brief.md` can produce a manager or peer-oriented brief
 
 **Maintenance:**
-- `/vault-audit` should be run at the end of substantial sessions — catches stale indexes and mixed context
-- `/vault-upgrade` imports content from an existing vault (older obsidian-mind or any Obsidian vault). Detects version, classifies notes, transforms frontmatter, fixes wikilinks, rebuilds indexes. Use `--dry-run` to preview.
-- `/project-archive` handles the active/ → archive/ move with index updates
+- `vault-audit.md` catches stale indexes, missing links, and mixed context
+- `vault-upgrade.md` imports content from an older Obsidian Mind vault or any general Obsidian vault
+- `project-archive.md` handles the active to archive move with index updates
 
-## Subagents
+## Deep-Work Playbooks
 
-| Agent | Purpose | Invoked by |
+| Playbook | Purpose | Typical Trigger |
 |-------|---------|------------|
-| `brag-spotter` | Proactively finds uncaptured wins and competency gaps | `/wrap-up`, `/weekly` |
-| `context-loader` | Loads all vault context about a person, project, incident, or concept | Direct — "load context on X" |
-| `cross-linker` | Finds missing wikilinks, orphans, broken backlinks across the vault | `/vault-audit` |
-| `people-profiler` | Bulk create/update person notes from Slack profiles | `/incident-capture` |
-| `review-prep` | Aggregates all performance evidence for a given review period | `/review-brief` |
-| `slack-archaeologist` | Full Slack reconstruction — reads every message, thread, profile, produces unified timeline | `/incident-capture` |
-| `vault-librarian` | Deep vault maintenance — orphan detection, broken links, frontmatter validation, stale notes | `/vault-audit` |
-| `review-fact-checker` | Verify every claim in a review draft against vault sources | `/self-review`, `/review-peer` |
-| `vault-migrator` | Classify, transform, and migrate content from a source vault | `/vault-upgrade` |
+| `brag-spotter.md` | Find uncaptured wins and competency gaps | `weekly.md`, `wrap-up.md` |
+| `context-loader.md` | Load all vault context about a person, project, incident, or concept | "Load context on X" |
+| `cross-linker.md` | Find missing wikilinks, orphans, and broken backlinks | `vault-audit.md` |
+| `people-profiler.md` | Create or update person notes from source material | `incident-capture.md` |
+| `review-prep.md` | Aggregate performance evidence for a review period | `review-brief.md` |
+| `slack-archaeologist.md` | Reconstruct context from Slack transcripts or exports | `incident-capture.md` |
+| `vault-librarian.md` | Audit note hygiene and stale notes | `vault-audit.md` |
+| `review-fact-checker.md` | Verify review claims against vault sources | `self-review.md`, `review-peer.md` |
+| `vault-migrator.md` | Classify and migrate content from a source vault | `vault-upgrade.md` |
 
-Subagents run in isolated context windows via `.claude/agents/`. They don't pollute the main conversation.
+These are instructions, not auto-registered repo-local agents.
 
-## Hooks
+## Helper Scripts
 
-| Hook | When | What |
-|------|------|------|
-| SessionStart | On startup/resume | QMD re-index, inject North Star, active work, recent changes, tasks, file listing |
-| UserPromptSubmit | Every message | Classify content (decision, incident, 1:1, win, architecture, person, project update) and inject routing hints |
-| PreToolUse (Write/Edit) | Before file writes | Validate frontmatter, check for wikilinks, verify folder placement |
-| PreCompact | Before context compaction | Back up session transcript to `thinking/session-logs/` |
-| Stop | End of session | Checklist: archive, update indexes, check orphans |
+| Script | Purpose |
+|------|------|
+| `.codex/scripts/session-context.sh` | Print a session kickoff summary |
+| `.codex/scripts/classify-message.py` | Detect routing hints in freeform input |
+| `.codex/scripts/validate-note.py` | Validate note hygiene after edits |
+| `.codex/scripts/charcount.sh` | Count review section characters and enforce limits |
 
 ## Semantic Search (QMD)
 
 If QMD is installed (`npm install -g @tobilu/qmd`), the vault has semantic search:
 
-- `qmd query "..."` — hybrid BM25 + vector + LLM reranking (best quality)
+- `qmd query "..."` — hybrid BM25 + vector + LLM reranking
 - `qmd search "..."` — fast BM25 keyword search
-- `qmd vsearch "..."` — semantic vector search (exploratory)
-- `qmd update && qmd embed` — refresh index after bulk changes
+- `qmd vsearch "..."` — semantic vector search
+- `qmd update && qmd embed` — refresh the index after bulk changes
 
-SessionStart hook runs `qmd update` automatically. See `.claude/skills/qmd/SKILL.md` for full reference.
+`.codex/scripts/session-context.sh` runs `qmd update` opportunistically. If you bulk-edit the vault,
+run `qmd update && qmd embed` yourself.
 
 ## Workflow: Weekly Review
 
-1. **`/weekly`** — synthesize the week's activity, check alignment, find patterns
+1. **`weekly.md`** — synthesize the week's activity, check alignment, find patterns
 2. Promote any uncaptured wins to brag doc
 3. Update North Star if focus shifted
-4. **`/wrap-up`** — close the session cleanly
+4. **`wrap-up.md`** — close the session cleanly
 
 ## Workflow: Full Review Cycle Prep
 
-1. **`/review-brief manager`** — generate the manager context transfer doc
-2. **`/review-brief peers`** — generate the peer context transfer doc
-3. **`/peer-scan`** (parallel, one per peer) — deep scan each peer's PRs
-4. **`/slack-scan`** — scan relevant channels for your own evidence + peer context
-5. **`/capture-1on1`** — capture the review 1:1 with your manager
-6. **`/vault-audit`** — tidy up after all the new data
+1. **`review-brief.md`** — generate the manager or peer context transfer doc
+2. **`peer-scan.md`** — deep scan peers' PRs
+3. **`slack-scan.md`** — scan relevant transcripts or exports for context
+4. **`capture-1on1.md`** — capture the review 1:1 with your manager
+5. **`vault-audit.md`** — tidy up after all the new data
 
 ## Workflow: Project Ramp-Up
 
-1. **`/slack-scan`** — scan project channels for history and decisions
-2. **`/peer-scan`** (if needed) — understand what teammates have already built
+1. **`slack-scan.md`** — scan project channels or transcripts for history and decisions
+2. **`peer-scan.md`** (if needed) — understand what teammates have already built
 3. Create work note from gathered context
-4. **`/vault-audit`** — ensure everything links properly
+4. **`vault-audit.md`** — ensure everything links properly
